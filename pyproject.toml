@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "VSL_Valkyrie"
-version = "1.0.0"
+version = "1.0.5" # Increment this to 1.0.5
 authors = [
   { name="TheWyv3rn", email="vargr_vsl@proton.me" },
 ]
@@ -15,16 +15,45 @@ dependencies = [
     "rich>=13.0.0",
     "requests>=2.28.0",
 ]
-classifiers = [
-    "Programming Language :: Python :: 3",
-    "License :: OSI Approved :: MIT License",
-    "Operating System :: POSIX :: Linux",
-    "Topic :: Security",
-]
 
 [project.scripts]
 valkyrie = "Valkyrie:main"
 
+# --- THE FIX ---
+[tool.setuptools]
+py-modules = ["Valkyrie"] # This explicitly bundles the Valkyrie.py file
+
 [tool.setuptools.packages.find]
 where = ["."]
-include = ["modules*", "Valkyrie.py"]
+include = ["modules*"] 
+# ----------------
+```
+
+### 📂 Crucial Step: The `__init__.py` files
+For Python to "see" your sub-modules after they are installed via pip, every folder inside `modules/` must contain a file named `__init__.py` (it can be empty).
+
+**Ensure these exist in your project:**
+* `modules/__init__.py`
+* `modules/anon/__init__.py`
+* `modules/recon/__init__.py`
+
+If they aren't there, the `valkyrie` command will start, but it will crash the second it tries to import `GhostProtocol` or `Recon`.
+
+---
+
+### 🚀 The "Ghost in the Machine" Deployment
+Run this sequence to push the fix to PyPI:
+
+```bash
+# 1. Create the init files if they don't exist
+touch modules/__init__.py modules/anon/__init__.py modules/recon/__init__.py
+
+# 2. Add and Commit
+git add .
+git commit -m "FIX: Explicitly bundling Valkyrie module and adding init files"
+
+# 3. Tag it (Match the version in pyproject.toml)
+git tag v1.0.5
+
+# 4. Push
+git push origin master --tags
