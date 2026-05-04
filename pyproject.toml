@@ -1,0 +1,30 @@
+[build-system]
+requires = ["setuptools>=61.0"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "valkyrie-recon"
+version = "1.0.0"
+authors = [
+  { name="TheWyv3rn", email="vargr_vsl@proton.me" },
+]
+description = "⚔️ Valkyrie: An advanced, modular reconnaissance engine for security professionals."
+readme = "README.md"
+requires-python = ">=3.8"
+dependencies = [
+    "rich>=13.0.0",
+    "requests>=2.28.0",
+]
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: POSIX :: Linux",
+    "Topic :: Security",
+]
+
+[project.scripts]
+valkyrie = "Valkyrie:main"
+
+[tool.setuptools.packages.find]
+where = ["."]
+include = ["modules*", "Valkyrie.py"]
