@@ -1,11 +1,13 @@
 name: Upload Python Package
 
 on:
-  release:
-    types: [published]
+  push:
+    tags:
+      - 'v*' # Trigger on version tags like v1.0.1
 
 permissions:
-  contents: read
+  contents: write
+  id-token: write 
 
 jobs:
   release-build:
@@ -32,15 +34,10 @@ jobs:
 
   pypi-publish:
     runs-on: ubuntu-latest
-    needs:
-      - release-build
-    permissions:
-      id-token: write  # Mandatory for Trusted Publishing
-
+    needs: release-build
     environment:
       name: pypi
-      url: https://pypi.org/p/valkyrie-recon
-
+      url: https://pypi.org/p/VSL_Valkyrie
     steps:
       - name: Retrieve release distributions
         uses: actions/download-artifact@v4
@@ -48,7 +45,24 @@ jobs:
           name: release-dists
           path: dist/
 
-      - name: Publish release distributions to PyPI
+      - name: Publish to PyPI
         uses: pypa/gh-action-pypi-publish@release/v1
         with:
           packages-dir: dist/
+
+  github-release:
+    runs-on: ubuntu-latest
+    needs: pypi-publish
+    steps:
+      - uses: actions/checkout@v4
+      - name: Retrieve distributions
+        uses: actions/download-artifact@v4
+        with:
+          name: release-dists
+          path: dist/
+      - name: Create GitHub Release
+        uses: softprops/action-gh-release@v1
+        with:
+          files: dist/*
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
