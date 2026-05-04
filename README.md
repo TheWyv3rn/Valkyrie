@@ -59,6 +59,10 @@ python3 -m venv venv
 source venv/bin/activate  
 pip install -r requirements.txt  
 ```  
+**OR**  
+```
+pip install VSL_Valkyrie  
+```  
   
 ## 🚀 Tactical Usage  
 Valkyrie uses a flag-based system to control the "Ghost Protocol" (anonymity layers) and execution depth.  
