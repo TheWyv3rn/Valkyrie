@@ -1,0 +1,23 @@
+# Credentials & Config
+proxies.txt
+.env
+auth.json
+
+# Recon Data (Target info stays local)
+*_subs.txt
+*_httpx.txt
+*_httpx_final.txt
+*_confirmed_domains.txt
+*_confirmed_ips.txt
+*_subfinder.txt
+*_findomain.txt
+
+# Python & System
+__pycache__/
+*.pyc
+venv/
+.DS_Store
+
+# Logs
+*.log
+valkyrie_history.db
